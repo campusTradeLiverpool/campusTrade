@@ -19,6 +19,7 @@ public class Listing {
     @Column(nullable = false)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
@@ -28,6 +29,12 @@ public class Listing {
     private String category;
 
     private String conditionReport;
+    
+    @Column
+    private String imageUrl;
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     private boolean isAvailable = true;
 

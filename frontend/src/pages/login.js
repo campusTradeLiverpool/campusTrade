@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -7,6 +8,13 @@ function Login() {
         password: ''
     });
     const [error, setError] = useState('');
+
+    useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+        window.location.href = '/profile';
+    }
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

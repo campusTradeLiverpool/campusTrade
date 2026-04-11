@@ -4,6 +4,8 @@ import Register from './pages/register';
 import Map from './components/map/index';
 import NavBar from './components/NavBar';
 import Login from './pages/login';
+import Sell from './pages/sell';
+import Profile from './pages/profile';
 
 function App() {
     return (
@@ -13,6 +15,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/map" element={<Map />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/sell" element={<Sell />} />
             </Routes>
         </Router>
     );

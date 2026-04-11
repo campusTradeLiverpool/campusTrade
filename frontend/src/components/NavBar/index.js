@@ -12,6 +12,16 @@ import {
 } from "./NavBarElements";
 
 const Navbar = () => {
+    const user = localStorage.getItem('user');
+
+    const handleProfileClick = () => {
+        if (user) {
+            window.location.href = '/profile';
+        } else {
+            window.location.href = '/register';
+        }
+    };
+
     return (
         <>
             <Nav>
@@ -25,8 +35,8 @@ const Navbar = () => {
                 </SearchBar>
                 <NavActions>
                     <NavActionItem>BUY</NavActionItem>
-                    <NavActionItem>SELL</NavActionItem>
-                    <ProfileIcon to="/register" aria-label="Register">
+                    <NavActionItem onClick={() => window.location.href = '/sell'}>SELL</NavActionItem>
+                    <ProfileIcon onClick={handleProfileClick}>
                         <FaUserCircle />
                     </ProfileIcon>
                 </NavActions>
