@@ -32,6 +32,16 @@ function ListingDetail() {
 
     const isOwnListing = user?.email === listing.seller?.email;
 
+    const handleDelete = async () => {
+        if (!window.confirm('Are you sure you want to delete this listing?')) return;
+        try {
+            await axios.delete(`http://localhost:8080/api/listings/${id}?email=${user.email}`);
+            window.location.href = '/';
+        } catch (err) {
+            alert('Failed to delete listing');
+        }
+    };
+
     return (
         <div style={styles.container}>
             {listing.imageUrl ? (
@@ -47,15 +57,11 @@ function ListingDetail() {
                 <p style={styles.description}>{listing.description}</p>
                 <p style={styles.seller}>Seller: {listing.seller?.name}</p>
 
-                {!isOwnListing && (
-                    <div style={styles.buttons}>
-                        <button style={styles.buyBtn} onClick={handleBuy}>Buy Now</button>
-                        <button style={styles.tradeBtn} onClick={handleTrade}>Propose Trade</button>
-                    </div>
-                )}
-
                 {isOwnListing && (
-                    <p style={styles.ownListing}>This is your listing</p>
+                    <div>
+                        <p style={styles.ownListing}>This is your listing</p>
+                        <button style={styles.deleteBtn} onClick={handleDelete}>Delete Listing</button>
+                    </div>
                 )}
             </div>
         </div>
@@ -77,6 +83,16 @@ const styles = {
         objectFit: 'cover',
         borderRadius: '8px',
         marginBottom: '24px'
+    },
+    deleteBtn: {
+    padding: '12px 32px',
+    backgroundColor: '#cc0000',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    marginTop: '10px'
     },
     noImage: {
         width: '100%',

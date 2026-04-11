@@ -30,6 +30,22 @@ public class ListingController {
         }
     }
 
+    @GetMapping("/seller/{email}")
+    public ResponseEntity<?> getListingsBySeller(@PathVariable String email) {
+        return ResponseEntity.ok(listingRepository.findBySellerEmail(email));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteListing(@PathVariable Long id, @RequestParam String email) {
+        return listingRepository.findById(id).map(listing -> {
+            if (!listing.getSeller().getEmail().equals(email)) {
+                return ResponseEntity.status(403).body("Not authorised");
+            }
+            listingRepository.delete(listing);
+            return ResponseEntity.ok("Listing deleted");
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getListing(@PathVariable Long id) {
         return listingRepository.findById(id)
