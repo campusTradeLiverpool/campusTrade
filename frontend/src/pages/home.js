@@ -51,7 +51,7 @@ function Home() {
             ) : (
                 <div style={styles.grid}>
                     {filtered.map(listing => (
-                        <div key={listing.id} style={styles.card}>
+                        <div key={listing.id} style={styles.card} onClick={() => window.location.href = `/listing/${listing.id}`}>
                             {listing.imageUrl ? (
                                 <img
                                     src={listing.imageUrl}

@@ -1,6 +1,7 @@
 package com.campusTrade.backend.controller;
 
 import com.campusTrade.backend.model.Listing;
+import com.campusTrade.backend.repository.ListingRepository;
 import com.campusTrade.backend.service.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class ListingController {
     @Autowired
     private ListingService listingService;
 
+    @Autowired
+    private ListingRepository listingRepository;
+
     @PostMapping
     public ResponseEntity<?> createListing(@RequestBody Map<String, String> data) {
         try {
@@ -24,6 +28,13 @@ public class ListingController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getListing(@PathVariable Long id) {
+        return listingRepository.findById(id)
+            .map(listing -> ResponseEntity.ok(listing))
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
