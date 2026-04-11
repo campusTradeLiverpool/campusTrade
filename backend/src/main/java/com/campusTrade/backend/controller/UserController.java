@@ -8,7 +8,7 @@ import com.campusTrade.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -35,6 +35,7 @@ public class UserController {
         }
     }
 
+    
     @GetMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token) {
         Optional<VerificationToken> optionalToken = tokenRepository.findByToken(token);
@@ -54,5 +55,18 @@ public class UserController {
         userRepository.save(user);
 
         return ResponseEntity.ok("Account verified successfully for " + user.getEmail());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        try {
+            User user = userService.loginUser(
+                credentials.get("email"),
+                credentials.get("password")
+            );
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

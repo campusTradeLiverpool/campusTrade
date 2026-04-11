@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Register() {
+function Login() {
     const [formData, setFormData] = useState({
         email: '',
-        name: '',
-        dateOfBirth: '',
         password: ''
     });
-    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
     const handleChange = (e) => {
@@ -17,34 +14,25 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage('');
         setError('');
         try {
-            const response = await axios.post('http://localhost:8080/api/users/register', formData);
-            setMessage(response.data);
+            const response = await axios.post('http://localhost:8080/api/users/login', formData);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            window.location.href = '/';
         } catch (err) {
-            setError(err.response?.data || 'Something went wrong');
+            setError(err.response?.data || 'Invalid email or password');
         }
     };
 
     return (
         <div style={styles.container}>
-            <h2>Create your campusTrade account!</h2>
+            <h2>Login to CampusTrade</h2>
             <form onSubmit={handleSubmit} style={styles.form}>
-                <input
-                    style={styles.input}
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
                 <input
                     style={styles.input}
                     type="email"
                     name="email"
-                    placeholder="University Email (ends in .ac.uk)"
+                    placeholder="University email (.ac.uk)"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -58,19 +46,10 @@ function Register() {
                     onChange={handleChange}
                     required
                 />
-                <input
-                    style={styles.input}
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleChange}
-                    required
-                />
-                <button style={styles.button} type="submit">Register</button>
+                <button style={styles.button} type="submit">Login</button>
             </form>
-            <p>Already have an account? <a href="/login">Login here</a></p>
-            {message && <p style={styles.success}>{message}</p>}
             {error && <p style={styles.error}>{error}</p>}
+            <p>Don't have an account? <a href="/register">Register here</a></p>
         </div>
     );
 }
@@ -97,15 +76,14 @@ const styles = {
     },
     button: {
         padding: '10px',
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#e8514a',
         color: 'white',
         border: 'none',
         borderRadius: '4px',
         fontSize: '16px',
         cursor: 'pointer'
     },
-    success: { color: 'green' },
     error: { color: 'red' }
 };
 
-export default Register;
+export default Login;
