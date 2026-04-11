@@ -34,19 +34,13 @@ const Navbar = () => {
                     <FaSearch color="#888" />
                 </SearchBar>
                 <NavActions>
-                    <NavActionItem>BUY</NavActionItem>
+                    <NavActionItem onClick={() => window.location.href = '/'}>BUY</NavActionItem>
                     <NavActionItem onClick={() => window.location.href = '/sell'}>SELL</NavActionItem>
                     <ProfileIcon onClick={handleProfileClick}>
                         <FaUserCircle />
                     </ProfileIcon>
                 </NavActions>
             </Nav>
-            <CategoryBar>
-                <CategoryItem>Clothes</CategoryItem>
-                <CategoryItem>Homeware</CategoryItem>
-                <CategoryItem>Other</CategoryItem>
-                <CategoryItem>Recently Added</CategoryItem>
-            </CategoryBar>
         </>
     );
 };
