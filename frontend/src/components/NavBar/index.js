@@ -13,6 +13,13 @@ import {
 
 const Navbar = () => {
     const user = localStorage.getItem('user');
+    const [search, setSearch] = React.useState('');
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter' && search.trim()) {
+            window.location.href = `/?search=${encodeURIComponent(search)}`;
+        }
+    };
 
     const handleProfileClick = () => {
         if (user) {
@@ -30,8 +37,16 @@ const Navbar = () => {
                     <p>University of Liverpool</p>
                 </Logo>
                 <SearchBar>
-                    <input type="text" placeholder="" />
-                    <FaSearch color="#888" />
+                    <input
+                        type="text"
+                        placeholder="Search listings..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                        onKeyDown={handleSearch}
+                    />
+                    <FaSearch color="#888" onClick={() => {
+                        if (search.trim()) window.location.href = `/?search=${encodeURIComponent(search)}`;
+                    }} style={{cursor: 'pointer'}} />
                 </SearchBar>
                 <NavActions>
                     <NavActionItem onClick={() => window.location.href = '/'}>BUY</NavActionItem>
@@ -44,12 +59,6 @@ const Navbar = () => {
                     </ProfileIcon>
                 </NavActions>
             </Nav>
-            <CategoryBar>
-                <CategoryItem>Clothes</CategoryItem>
-                <CategoryItem>Homeware</CategoryItem>
-                <CategoryItem>Other</CategoryItem>
-                <CategoryItem>Recently Added</CategoryItem>
-            </CategoryBar>
         </>
     );
 };

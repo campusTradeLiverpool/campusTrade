@@ -17,6 +17,7 @@ const Map = () => {
     });
 
     if (!isLoaded) return <div>Loading map...</div>;
+
     return (
         <GoogleMap
             mapContainerStyle={containerStyle}

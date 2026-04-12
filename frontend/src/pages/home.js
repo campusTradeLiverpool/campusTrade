@@ -7,11 +7,19 @@ function Home() {
     const [category, setCategory] = useState('All');
     const [loading, setLoading] = useState(true);
 
+    const searchQuery = new URLSearchParams(window.location.search).get('search') || '';
+
     useEffect(() => {
         axios.get('http://localhost:8080/api/listings')
             .then(res => {
                 setListings(res.data);
-                setFiltered(res.data);
+                const results = searchQuery
+                    ? res.data.filter(l =>
+                        l.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        l.description?.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    : res.data;
+                setFiltered(results);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -30,6 +38,12 @@ function Home() {
 
     return (
         <div>
+            {searchQuery && (
+                <p style={styles.searchInfo}>
+                    Showing results for: <strong>{searchQuery}</strong> —{' '}
+                    <span style={styles.clear} onClick={() => window.location.href = '/'}>Clear</span>
+                </p>
+            )}
             <div style={styles.categoryBar}>
                 {['All', 'Clothes', 'Homeware', 'Books', 'Other'].map(cat => (
                     <button
@@ -51,13 +65,13 @@ function Home() {
             ) : (
                 <div style={styles.grid}>
                     {filtered.map(listing => (
-                        <div key={listing.id} style={styles.card} onClick={() => window.location.href = `/listing/${listing.id}`}>
+                        <div
+                            key={listing.id}
+                            style={styles.card}
+                            onClick={() => window.location.href = `/listing/${listing.id}`}
+                        >
                             {listing.imageUrl ? (
-                                <img
-                                    src={listing.imageUrl}
-                                    alt={listing.title}
-                                    style={styles.image}
-                                />
+                                <img src={listing.imageUrl} alt={listing.title} style={styles.image} />
                             ) : (
                                 <div style={styles.noImage}>No Image</div>
                             )}
@@ -76,6 +90,16 @@ function Home() {
 }
 
 const styles = {
+    searchInfo: {
+        padding: '10px 30px',
+        color: '#666',
+        fontSize: '14px'
+    },
+    clear: {
+        color: '#e8514a',
+        cursor: 'pointer',
+        textDecoration: 'underline'
+    },
     categoryBar: {
         display: 'flex',
         justifyContent: 'center',
@@ -102,7 +126,6 @@ const styles = {
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         overflow: 'hidden',
         cursor: 'pointer',
-        transition: 'transform 0.2s',
         backgroundColor: 'white'
     },
     image: {
@@ -119,38 +142,13 @@ const styles = {
         justifyContent: 'center',
         color: '#888'
     },
-    info: {
-        padding: '12px'
-    },
-    title: {
-        fontSize: '16px',
-        margin: '0 0 4px 0'
-    },
-    category: {
-        color: '#e8514a',
-        fontSize: '13px',
-        margin: '0 0 4px 0'
-    },
-    condition: {
-        color: '#666',
-        fontSize: '13px',
-        margin: '0 0 4px 0'
-    },
-    seller: {
-        color: '#888',
-        fontSize: '12px',
-        margin: 0
-    },
-    loading: {
-        textAlign: 'center',
-        padding: '60px',
-        fontSize: '18px'
-    },
-    empty: {
-        textAlign: 'center',
-        padding: '60px',
-        color: '#888'
-    }
+    info: { padding: '12px' },
+    title: { fontSize: '16px', margin: '0 0 4px 0' },
+    category: { color: '#e8514a', fontSize: '13px', margin: '0 0 4px 0' },
+    condition: { color: '#666', fontSize: '13px', margin: '0 0 4px 0' },
+    seller: { color: '#888', fontSize: '12px', margin: 0 },
+    loading: { textAlign: 'center', padding: '60px', fontSize: '18px' },
+    empty: { textAlign: 'center', padding: '60px', color: '#888' }
 };
 
 export default Home;
