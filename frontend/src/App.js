@@ -7,7 +7,9 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import Sell from './pages/sell';
 import Home from './pages/home';
-import ListingDetail from './pages/listingDetail';
+import ListingDetail from './pages/listingDetail'
+import Messages from './pages/messages';
+import Inbox from './pages/inbox';
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                 <Route path="/sell" element={<Sell />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/listing/:id" element={<ListingDetail />} />
+                <Route path="/messages/:receiverEmail/:listingId" element={<Messages />} /> 
+                <Route path="/inbox" element={<Inbox />} />
             </Routes>
         </Router>
     );

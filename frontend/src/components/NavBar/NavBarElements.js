@@ -88,3 +88,19 @@ export const Bars = styled(FaBars)`
         cursor: pointer;
     }
 `;
+
+export const CategoryItem = styled.div`
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    border-right: 1px solid #ddd;
+    &:last-child {
+        border-right: none;
+    }
+    &:hover {
+        background: #f5f5f5;
+    }
+`;

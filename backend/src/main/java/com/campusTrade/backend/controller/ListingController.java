@@ -2,6 +2,7 @@ package com.campusTrade.backend.controller;
 
 import com.campusTrade.backend.model.Listing;
 import com.campusTrade.backend.repository.ListingRepository;
+import com.campusTrade.backend.repository.MessageRepository;
 import com.campusTrade.backend.service.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class ListingController {
 
     @Autowired
     private ListingRepository listingRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     @PostMapping
     public ResponseEntity<?> createListing(@RequestBody Map<String, String> data) {
@@ -41,6 +45,7 @@ public class ListingController {
             if (!listing.getSeller().getEmail().equals(email)) {
                 return ResponseEntity.status(403).body("Not authorised");
             }
+            messageRepository.deleteByListingId(id);
             listingRepository.delete(listing);
             return ResponseEntity.ok("Listing deleted");
         }).orElse(ResponseEntity.notFound().build());

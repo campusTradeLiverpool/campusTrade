@@ -42,6 +42,9 @@ function ListingDetail() {
         }
     };
 
+    console.log('listing:', listing);
+    console.log('seller:', listing?.seller);
+
     return (
         <div style={styles.container}>
             {listing.imageUrl ? (
@@ -56,6 +59,13 @@ function ListingDetail() {
                 <p style={styles.condition}>Condition: {listing.conditionReport}</p>
                 <p style={styles.description}>{listing.description}</p>
                 <p style={styles.seller}>Seller: {listing.seller?.name}</p>
+
+                {!isOwnListing && (
+                    <div style={styles.buttons}>
+                        <button style={styles.buyBtn} onClick={handleBuy}>Buy Now</button>
+                        <button style={styles.tradeBtn} onClick={handleTrade}>Propose Trade</button>
+                    </div>
+                )}
 
                 {isOwnListing && (
                     <div>

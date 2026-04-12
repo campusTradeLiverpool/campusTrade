@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaUserCircle, FaEnvelope } from "react-icons/fa";
 import {
     Nav,
     Logo,
@@ -36,11 +36,20 @@ const Navbar = () => {
                 <NavActions>
                     <NavActionItem onClick={() => window.location.href = '/'}>BUY</NavActionItem>
                     <NavActionItem onClick={() => window.location.href = '/sell'}>SELL</NavActionItem>
+                    <NavActionItem onClick={() => window.location.href = '/inbox'}>
+                        <FaEnvelope />
+                    </NavActionItem>
                     <ProfileIcon onClick={handleProfileClick}>
                         <FaUserCircle />
                     </ProfileIcon>
                 </NavActions>
             </Nav>
+            <CategoryBar>
+                <CategoryItem>Clothes</CategoryItem>
+                <CategoryItem>Homeware</CategoryItem>
+                <CategoryItem>Other</CategoryItem>
+                <CategoryItem>Recently Added</CategoryItem>
+            </CategoryBar>
         </>
     );
 };
