@@ -11,6 +11,15 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    public void sendTransactionEmail(String toEmail, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply.campustrade@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    }
+
     public void sendVerificationEmail(String toEmail, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply.campustrade@gmail.com");

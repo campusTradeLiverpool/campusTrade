@@ -10,6 +10,8 @@ import Home from './pages/home';
 import ListingDetail from './pages/listingDetail'
 import Messages from './pages/messages';
 import Inbox from './pages/inbox';
+import Meetup from './pages/meetup';
+import ConfirmTransaction from './pages/confirmTransaction';
 
 function App() {
     return (
@@ -25,6 +27,8 @@ function App() {
                 <Route path="/listing/:id" element={<ListingDetail />} />
                 <Route path="/messages/:receiverEmail/:listingId" element={<Messages />} /> 
                 <Route path="/inbox" element={<Inbox />} />
+                <Route path="/meetup/:listingId" element={<Meetup />} />
+                <Route path="/confirm-transaction/:transactionId" element={<ConfirmTransaction />} />
             </Routes>
         </Router>
     );

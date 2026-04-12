@@ -24,10 +24,10 @@ public class Transaction {
     private Listing listing;
 
     private boolean inSafeZone = false;
-
+    private boolean buyerConfirmed = false;
+    private boolean sellerConfirmed = false;
     private LocalDateTime completedAt;
 
-    // Getters and Setters
     public Long getId() { return id; }
     public User getBuyer() { return buyer; }
     public void setBuyer(User buyer) { this.buyer = buyer; }
@@ -37,6 +37,10 @@ public class Transaction {
     public void setListing(Listing listing) { this.listing = listing; }
     public boolean isInSafeZone() { return inSafeZone; }
     public void setInSafeZone(boolean inSafeZone) { this.inSafeZone = inSafeZone; }
+    public boolean isBuyerConfirmed() { return buyerConfirmed; }
+    public void setBuyerConfirmed(boolean buyerConfirmed) { this.buyerConfirmed = buyerConfirmed; }
+    public boolean isSellerConfirmed() { return sellerConfirmed; }
+    public void setSellerConfirmed(boolean sellerConfirmed) { this.sellerConfirmed = sellerConfirmed; }
     public LocalDateTime getCompletedAt() { return completedAt; }
     public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
 }
