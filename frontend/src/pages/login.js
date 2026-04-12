@@ -3,12 +3,17 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 function Login() {
+
+    // state for the form data
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+
+    // state for error message
     const [error, setError] = useState('');
 
+    // gets the user from local storage and if there is a user, it sends them to the profile page
     useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
@@ -20,6 +25,8 @@ function Login() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // function to handle the submit, it sends a post request to the sql with the data provided and if successful it saves the user
+    // to the local storage and if not it sets an error message
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -31,10 +38,11 @@ function Login() {
             setError(err.response?.data || 'Invalid email or password');
         }
     };
-
+    
+    {/* simple login with email and password */}
     return (
         <div style={styles.container}>
-            <h2>Login to CampusTrade</h2>
+            <h2>Login to campusTrade</h2>
             <form onSubmit={handleSubmit} style={styles.form}>
                 <input
                     style={styles.input}
@@ -64,34 +72,26 @@ function Login() {
 
 const styles = {
     container: {
-        maxWidth: '400px',
+        maxWidth: '500px',
         margin: '80px auto',
         padding: '40px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        fontFamily: 'Arial, sans-serif'
     },
     form: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px'
+        gap: '8px'
     },
     input: {
         padding: '10px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-        fontSize: '14px'
+        fontSize: '16px'
     },
     button: {
         padding: '10px',
         backgroundColor: '#e8514a',
         color: 'white',
-        border: 'none',
-        borderRadius: '4px',
         fontSize: '16px',
         cursor: 'pointer'
     },
-    error: { color: 'red' }
 };
 
 export default Login;

@@ -3,15 +3,19 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 function Register() {
+    // state for the form data
     const [formData, setFormData] = useState({
         email: '',
         name: '',
         dateOfBirth: '',
         password: ''
     });
+
+    // sets states for the success message and the errors
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
+    // gets the user from local storage and if there is a user, it sends them to the profile page
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user) {
@@ -23,6 +27,7 @@ function Register() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // function to handle the register, it sends a post request to the sql with the data provided and if successful it sets a success message and if not it sets an error message
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
@@ -31,10 +36,11 @@ function Register() {
             const response = await axios.post('http://localhost:8080/api/users/register', formData);
             setMessage(response.data);
         } catch (err) {
-            setError(err.response?.data || 'Something went wrong');
+            setError(err.response?.data || 'Something went wrong, try again later.');
         }
     };
 
+    {/* basic registration form with name, email, date of birth and password */}
     return (
         <div style={styles.container}>
             <h2>Create your campusTrade account!</h2>
@@ -85,35 +91,26 @@ function Register() {
 
 const styles = {
     container: {
-        maxWidth: '400px',
+        maxWidth: '500px',
         margin: '80px auto',
         padding: '40px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        fontFamily: 'Arial, sans-serif'
     },
     form: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px'
+        gap: '8px'
     },
     input: {
         padding: '10px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-        fontSize: '14px'
+        fontSize: '16px'
     },
     button: {
         padding: '10px',
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#e8514a',
         color: 'white',
-        border: 'none',
-        borderRadius: '4px',
         fontSize: '16px',
         cursor: 'pointer'
     },
-    success: { color: 'green' },
-    error: { color: 'red' }
 };
 
 export default Register;
