@@ -26,7 +26,7 @@ function Inbox() {
                 <p style={styles.empty}>No messages yet - find a item to trade or buy!</p>
             ) : (
                 <div style={styles.list}>
-                    // maps through the conversations and shows the name of the other user, the title of the listing and a preview of the most recent message
+                    {/*} maps through the conversations and shows the name of the other user, the title of the listing and a preview of the most recent message */}
                     {conversations.map((conv, index) => {
                         const otherUser = conv.sender.email === user.email ? conv.receiver : conv.sender;
                         return (
