@@ -3,11 +3,17 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function ListingDetail() {
+    // gets the listing id 
     const { id } = useParams();
+
+    // states for listing and loading
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // gets the user from local storage
     const user = JSON.parse(localStorage.getItem('user'));
 
+    // gets the listing details from the api and states the listing data
     useEffect(() => {
         axios.get(`http://localhost:8080/api/listings/${id}`)
             .then(res => {
@@ -17,40 +23,40 @@ function ListingDetail() {
             .catch(() => setLoading(false));
     }, [id]);
 
+    // function to handle buying the listing by sending the user to the meetup page with the listing id
     const handleBuy = () => {
         if (!user) { window.location.href = '/login'; return; }
         window.location.href = `/meetup/${id}`;
     };
 
+    // function to handle trade by sending the user to the messages page with the seller of the listing
     const handleTrade = () => {
         if (!user) { window.location.href = '/login'; return; }
         window.location.href = `/messages/${listing.seller.email}/${id}`;
     };
+    
+    if (!listing) return <div style={styles.loading}></div>;
 
-    if (loading) return <div style={styles.loading}>Loading...</div>;
-    if (!listing) return <div style={styles.loading}>Listing not found.</div>;
-
+    // checks if the listing belongs to the user
     const isOwnListing = user?.email === listing.seller?.email;
 
+    // function to handle deleting the listing
     const handleDelete = async () => {
         if (!window.confirm('Are you sure you want to delete this listing?')) return;
         try {
+            // sends a delete request to the backend api 
             await axios.delete(`http://localhost:8080/api/listings/${id}?email=${user.email}`);
             window.location.href = '/';
         } catch (err) {
+            // error if there is any issue
             alert('Failed to delete listing');
         }
     };
 
-    console.log('listing:', listing);
-    console.log('seller:', listing?.seller);
-
     return (
         <div style={styles.container}>
-            {listing.imageUrl ? (
+            {listing.imageUrl && (
                 <img src={listing.imageUrl} alt={listing.title} style={styles.image} />
-            ) : (
-                <div style={styles.noImage}>No Image</div>
             )}
             <div style={styles.details}>
                 <h2>{listing.title}</h2>
@@ -60,6 +66,7 @@ function ListingDetail() {
                 <p style={styles.description}>{listing.description}</p>
                 <p style={styles.seller}>Seller: {listing.seller?.name}</p>
 
+                {/* buttons to show if the listing is not the users own */}
                 {!isOwnListing && (
                     <div style={styles.buttons}>
                         <button style={styles.buyBtn} onClick={handleBuy}>Buy Now</button>
@@ -67,9 +74,9 @@ function ListingDetail() {
                     </div>
                 )}
 
+                {/* button to show if the listing is the users own */}
                 {isOwnListing && (
                     <div>
-                        <p style={styles.ownListing}>This is your listing</p>
                         <button style={styles.deleteBtn} onClick={handleDelete}>Delete Listing</button>
                     </div>
                 )}
@@ -85,33 +92,19 @@ const styles = {
         maxWidth: '800px',
         margin: '40px auto',
         padding: '20px',
-        fontFamily: 'Arial, sans-serif'
     },
     image: {
         width: '100%',
         maxHeight: '400px',
-        objectFit: 'cover',
-        borderRadius: '8px',
         marginBottom: '24px'
     },
     deleteBtn: {
     padding: '12px 32px',
-    backgroundColor: '#cc0000',
+    backgroundColor: '#e8514a',
     color: 'white',
     border: 'none',
-    borderRadius: '4px',
     fontSize: '16px',
     cursor: 'pointer',
-    marginTop: '10px'
     },
-    noImage: {
-        width: '100%',
-        height: '300px',
-        backgroundColor: '#f0f0f0',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '8px',
-        marginBottom: '24px',
-    }
+
 }

@@ -52,7 +52,7 @@ function Profile() {
                             style={styles.listingCard}
                             onClick={() => window.location.href = `/listing/${listing.id}`}
                         >   
-                        // if the listing has an image it shows the image and if it doesn't it shows a placeholder
+                        {/* if the listing has an image it shows the image and if it doesn't it shows a placeholder */}
                             {listing.imageUrl ? (
                                 <img src={listing.imageUrl} alt={listing.title} style={styles.image} />
                             ) : (

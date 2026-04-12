@@ -1,4 +1,3 @@
-import { FaBars } from "react-icons/fa";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
