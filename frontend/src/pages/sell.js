@@ -43,12 +43,12 @@ function Sell() {
                     description: book.description || '',
                     category: 'Books'
                 }));
-                setMessage('Book details loaded successfully');
+                setMessage('');
             } else {
-                setError('No book found with that ISBN');
+                setError('Incorrect ISBN');
             }
         } catch (err) {
-            setError('Failed to fetch book details');
+            setError('An error occured.');
         }
         setLoading(false);
     };

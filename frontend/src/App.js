@@ -1,12 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar';
 import Register from './pages/register';
 import Login from './pages/login';
 import Profile from './pages/profile';
 import Sell from './pages/sell';
 import Home from './pages/home';
-import ListingDetail from './pages/listingDetail'
+import ListingDetail from './pages/listingDetail';
 import Messages from './pages/messages';
 import Inbox from './pages/inbox';
 import Meetup from './pages/meetup';
