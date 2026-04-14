@@ -30,7 +30,7 @@ function Messages() {
     const handleSend = async () => {
         if (!content.trim()) return;
         try {
-            await axios.post('${process.env.REACT_APP_API_URL}/api/messages', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/messages`, {
                 senderEmail: user.email,
                 receiverEmail: receiverEmail,
                 listingId: listingId,

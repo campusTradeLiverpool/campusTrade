@@ -69,14 +69,14 @@ function Sell() {
                 const imageData = new FormData();
                 imageData.append('file', image);
                 const uploadResponse = await axios.post(
-                    '${process.env.REACT_APP_API_URL}/api/images/upload',
+                    `${process.env.REACT_APP_API_URL}/api/images/upload`,
                     imageData,
                     { headers: { 'Content-Type': 'multipart/form-data' } }
                 );
                 imageUrl = uploadResponse.data.url;
             }
 
-            await axios.post('${process.env.REACT_APP_API_URL}/api/listings', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/listings`, {
                 title: formData.title,
                 description: formData.description,
                 price: formData.price,

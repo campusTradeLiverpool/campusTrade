@@ -31,7 +31,7 @@ function ConfirmTransaction() {
                 // gets the latitude and longitude from the position and sends it to the backend api to check if the user is in a safe zone
                 const { latitude, longitude } = position.coords;
                 try {
-                    const response = await axios.post('${process.env.REACT_APP_API_URL}/api/safezone/validate', {
+                    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/safezone/validate`, {
                         lat: latitude,
                         lng: longitude
                     });

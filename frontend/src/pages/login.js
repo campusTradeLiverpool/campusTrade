@@ -31,7 +31,7 @@ function Login() {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('${process.env.REACT_APP_API_URL}/api/users/login', formData);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`, formData);
             localStorage.setItem('user', JSON.stringify(response.data));
             window.location.href = '/';
         } catch (err) {

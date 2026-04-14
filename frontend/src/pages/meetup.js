@@ -42,7 +42,7 @@ function Meetup() {
                 setUserLocation({ lat: latitude, lng: longitude });
 
                 try {
-                    const response = await axios.post('${process.env.REACT_APP_API_URL}/api/safezone/validate', {
+                    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/safezone/validate`, {
                         lat: latitude,
                         lng: longitude
                     });
@@ -68,7 +68,7 @@ function Meetup() {
     
     const confirmMeetup = async () => {
         try {
-            await axios.post('${process.env.REACT_APP_API_URL}/api/transactions/buyer-confirm', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/transactions/buyer-confirm`, {
                 buyerEmail: user.email,
                 sellerEmail: listing.seller.email,
                 listingId: String(listingId),
