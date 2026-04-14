@@ -28,7 +28,7 @@ function Meetup() {
 
     useEffect(() => {
         if (!user) { window.location.href = '/login'; return; }
-        axios.get(`http://localhost:8080/api/listings/${listingId}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/listings/${listingId}`)
             .then(res => setListing(res.data));
     }, []);
 
@@ -42,7 +42,7 @@ function Meetup() {
                 setUserLocation({ lat: latitude, lng: longitude });
 
                 try {
-                    const response = await axios.post('http://localhost:8080/api/safezone/validate', {
+                    const response = await axios.post('${process.env.REACT_APP_API_URL}/api/safezone/validate', {
                         lat: latitude,
                         lng: longitude
                     });
@@ -68,7 +68,7 @@ function Meetup() {
     
     const confirmMeetup = async () => {
         try {
-            await axios.post('http://localhost:8080/api/transactions/buyer-confirm', {
+            await axios.post('${process.env.REACT_APP_API_URL}/api/transactions/buyer-confirm', {
                 buyerEmail: user.email,
                 sellerEmail: listing.seller.email,
                 listingId: String(listingId),

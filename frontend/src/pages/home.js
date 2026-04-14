@@ -10,7 +10,7 @@ function Home() {
     const searchQuery = new URLSearchParams(window.location.search).get('search') || '';
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/listings')
+        axios.get(`${process.env.REACT_APP_API_URL}/api/listings`)
             .then(res => {
                 setListings(res.data);
                 const results = searchQuery

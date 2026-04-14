@@ -33,7 +33,7 @@ function Register() {
         setMessage('');
         setError('');
         try {
-            const response = await axios.post('http://localhost:8080/api/users/register', formData);
+            const response = await axios.post('${process.env.REACT_APP_API_URL}/api/users/register', formData);
             setMessage(response.data);
         } catch (err) {
             setError(err.response?.data || 'Something went wrong, try again later.');

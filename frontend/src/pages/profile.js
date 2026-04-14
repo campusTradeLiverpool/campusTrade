@@ -15,7 +15,7 @@ function Profile() {
             // if there is a user it sets the user state to the user and then gets the listings for that user and sets the listings state to those listings
             const parsed = JSON.parse(stored);
             setUser(parsed);
-            axios.get(`http://localhost:8080/api/listings/seller/${parsed.email}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/api/listings/seller/${parsed.email}`)
                 .then(res => setListings(res.data))
                 .catch(() => {});
         }

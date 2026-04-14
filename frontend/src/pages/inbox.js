@@ -12,7 +12,7 @@ function Inbox() {
     useEffect(() => {
         if (!user) { window.location.href = '/login'; return; }
         // gets the conversations for the user via the email and shows the converstion data
-        axios.get(`http://localhost:8080/api/messages/inbox/${user.email}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/messages/inbox/${user.email}`)
             .then(res => {
                 setConversations(res.data);
             })

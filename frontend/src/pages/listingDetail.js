@@ -15,7 +15,7 @@ function ListingDetail() {
 
     // gets the listing details from the api and states the listing data
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/listings/${id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/listings/${id}`)
             .then(res => {
                 setListing(res.data);
                 setLoading(false);
@@ -45,7 +45,7 @@ function ListingDetail() {
         if (!window.confirm('Are you sure you want to delete this listing?')) return;
         try {
             // sends a delete request to the backend api 
-            await axios.delete(`http://localhost:8080/api/listings/${id}?email=${user.email}`);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/listings/${id}?email=${user.email}`);
             window.location.href = '/';
         } catch (err) {
             // error if there is any issue

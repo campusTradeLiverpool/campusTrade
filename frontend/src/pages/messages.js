@@ -12,7 +12,7 @@ function Messages() {
     useEffect(() => {
         if (!user) { window.location.href = '/login'; return; }
         fetchMessages();
-        axios.get(`http://localhost:8080/api/listings/${listingId}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/listings/${listingId}`)
             .then(res => setListing(res.data));
 
         const interval = setInterval(() => {
@@ -23,14 +23,14 @@ function Messages() {
     }, []);
 
     const fetchMessages = () => {
-        axios.get(`http://localhost:8080/api/messages/${listingId}/${user.email}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/messages/${listingId}/${user.email}`)
             .then(res => setMessages(res.data));
     };
 
     const handleSend = async () => {
         if (!content.trim()) return;
         try {
-            await axios.post('http://localhost:8080/api/messages', {
+            await axios.post('${process.env.REACT_APP_API_URL}/api/messages', {
                 senderEmail: user.email,
                 receiverEmail: receiverEmail,
                 listingId: listingId,
