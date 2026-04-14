@@ -15,7 +15,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins(
                     "http://localhost:3000",
-                    "https://campus-trade-ghw1y28c9-jooooooooooooels-projects.vercel.app"
+                    "https://campus-trade-*.vercel.app"a
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
