@@ -13,9 +13,9 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins(
+                .allowedOriginPatterns(
                     "http://localhost:3000",
-                    "https://campus-trade-*.vercel.app"
+                    "https://*.vercel.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
@@ -25,7 +25,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configure(http))  // ← tell Spring Security to use your CORS config
+            .cors(cors -> cors.configure(http))
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
