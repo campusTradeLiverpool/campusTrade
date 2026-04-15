@@ -34,7 +34,7 @@ function Meetup() {
 
     const checkLocation = () => {
         setChecking(true);
-        setStatus('Getting your location...');
+        setStatus('Getting your location..');
 
         navigator.geolocation.getCurrentPosition(
             async (position) => {
