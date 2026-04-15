@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
 @Service
 public class UserService {
 
@@ -35,32 +34,35 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setVerified(false);
+        user.setVerified(true);
         userRepository.save(user);
 
-        VerificationToken token = new VerificationToken();
-        token.setToken(UUID.randomUUID().toString());
-        token.setUser(user);
-        token.setExpiresAt(LocalDateTime.now().plusHours(24));
-        tokenRepository.save(token);
-
-        emailService.sendVerificationEmail(user.getEmail(), token.getToken());
+        try {
+            VerificationToken token = new VerificationToken();
+            token.setToken(UUID.randomUUID().toString());
+            token.setUser(user);
+            token.setExpiresAt(LocalDateTime.now().plusHours(24));
+            tokenRepository.save(token);
+            emailService.sendVerificationEmail(user.getEmail(), token.getToken());
+        } catch (Exception e) {
+            System.out.println("Email sending failed: " + e.getMessage());
+        }
 
         return user;
     }
 
     public User loginUser(String email, String password) {
-    User user = userRepository.findById(email)
-        .orElseThrow(() -> new IllegalArgumentException("No account found with this email"));
+        User user = userRepository.findById(email)
+            .orElseThrow(() -> new IllegalArgumentException("No account found with this email"));
 
-    if (!user.isVerified()) {
-        throw new IllegalArgumentException("Please verify your email before logging in");
-    }
+        if (!user.isVerified()) {
+            throw new IllegalArgumentException("Please verify your email before logging in");
+        }
 
-    if (!passwordEncoder.matches(password, user.getPassword())) {
-        throw new IllegalArgumentException("Incorrect password");
-    }
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Incorrect password");
+        }
 
-    return user;
+        return user;
     }
 }
