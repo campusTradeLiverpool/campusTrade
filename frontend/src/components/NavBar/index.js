@@ -43,7 +43,7 @@ const Navbar = () => {
 
             {/* navigation links to buy, sell, inbox and profile, where profile and inbox is through icons */}
             <NavActions>
-                <NavBarLink onClick={() => window.location.href = '/'}>BUY</NavBarLink>
+                <NavBarLink onClick={() => window.location.href = '/'}>TRADE</NavBarLink>
                 <NavBarLink onClick={() => window.location.href = '/sell'}>SELL</NavBarLink>
                 <NavBarLink onClick={() => window.location.href = '/inbox'}>
                     <FaEnvelope />

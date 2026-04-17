@@ -69,7 +69,7 @@ function ListingDetail() {
                 {/* buttons to show if the listing is not the users own */}
                 {!isOwnListing && (
                     <div style={styles.buttons}>
-                        <button style={styles.buyBtn} onClick={handleBuy}>Buy Now</button>
+                        {/* <button style={styles.buyBtn} onClick={handleBuy}>Buy Now</button> */}
                         <button style={styles.tradeBtn} onClick={handleTrade}>Propose Trade</button>
                     </div>
                 )}
