@@ -59,11 +59,17 @@ function ConfirmTransaction() {
     // function to confirm the transaction
     const confirmTransaction = async () => {
         try {
-            // sends a post request to the backend api to confirm the transaction
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/transactions/seller-confirm/${transactionId}`, {
-                sellerEmail: user.email
-            });
-            // sets it to be confirmed and shows the status
+            const token = localStorage.getItem('token'); // or however you store it
+
+            await axios.post(
+                `${process.env.REACT_APP_API_URL}/api/transactions/seller-confirm/${transactionId}`,
+                { sellerEmail: user.email },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`  // ← this was missing
+                    }
+                }
+            );
             setConfirmed(true);
             setStatus('Transaction confirmed! Both users have been emailed the details.');
         } catch (err) {
