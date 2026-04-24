@@ -8,7 +8,6 @@ import com.campusTrade.backend.repository.UserRepository;
 import com.campusTrade.backend.repository.ListingRepository;
 import com.campusTrade.backend.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +22,6 @@ public class TransactionController {
     @Autowired private UserRepository userRepository;
     @Autowired private ListingRepository listingRepository;
     @Autowired private EmailService emailService;
-
-    @Value("${app.frontend.url}")
-    private String frontendUrl;
 
     @PostMapping("/buyer-confirm")
     public ResponseEntity<?> buyerConfirm(@RequestBody Map<String, String> data) {
@@ -47,7 +43,7 @@ public class TransactionController {
             transactionRepository.save(transaction);
 
             String sellerToken = data.get("sellerToken"); 
-            String confirmUrl = frontendUrl + "/confirm-transaction/" + transaction.getId() + "?token=" + sellerToken;
+            String confirmUrl = "https://campus-trade-orcin.vercel.app/confirm-transaction/" + transaction.getId() + "?token=" + sellerToken;
 
             emailService.sendTransactionEmail(
                 seller.getEmail(),

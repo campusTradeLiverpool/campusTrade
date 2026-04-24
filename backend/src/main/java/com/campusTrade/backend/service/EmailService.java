@@ -1,7 +1,6 @@
 package com.campusTrade.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,9 +10,6 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
-
-    @Value("${app.frontend.url}")
-    private String frontendUrl;
 
     public void sendTransactionEmail(String toEmail, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -30,12 +26,12 @@ public class EmailService {
         message.setTo(toEmail);
         message.setSubject("Verify your CampusTrade account");
         message.setText("Click the link below to verify your account:\n\n" +
-                frontendUrl + "/api/users/verify?token=" + token);
+                "https://campus-trade-orcin.vercel.app/api/users/verify?token=" + token);
         mailSender.send(message);
     }
 
     public void sendSellerConfirmationEmail(String toEmail, Long transactionId, String jwtToken) {
-        String confirmUrl = frontendUrl + "/confirm/" + transactionId + "?token=" + jwtToken;
+        String confirmUrl = "https://campus-trade-orcin.vercel.app/confirm/" + transactionId + "?token=" + jwtToken;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply.campustrade@gmail.com");
