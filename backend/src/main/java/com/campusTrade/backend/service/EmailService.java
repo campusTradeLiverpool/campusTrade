@@ -1,47 +1,40 @@
 package com.campusTrade.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    @Value("${RESEND_API_KEY}")
+    private String resendApiKey;
+
+    @Value("${APP_FRONTEND_URL}")
+    private String frontendUrl;
 
     public void sendTransactionEmail(String toEmail, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply.campustrade@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
+        Resend resend = new Resend(resendApiKey);
+        CreateEmailOptions params = CreateEmailOptions.builder()
+            .from("noreply@campustrade.com")
+            .to(toEmail)
+            .subject(subject)
+            .text(body)
+            .build();
+        try {
+            resend.emails().send(params);
+        } catch (Exception e) {
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
     }
 
     public void sendVerificationEmail(String toEmail, String token) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply.campustrade@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject("Verify your CampusTrade account");
-        message.setText("Click the link below to verify your account:\n\n" +
-                "https://campus-trade-orcin.vercel.app/api/users/verify?token=" + token);
-        mailSender.send(message);
-    }
-
-    public void sendSellerConfirmationEmail(String toEmail, Long transactionId, String jwtToken) {
-        String confirmUrl = "https://campus-trade-orcin.vercel.app/confirm/" + transactionId + "?token=" + jwtToken;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply.campustrade@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject("Confirm your CampusTrade sale");
-        message.setText(
-            "A buyer has confirmed they want to complete the trade.\n\n" +
-            "Click the link below when you are in a University of Liverpool safe zone to confirm:\n\n" +
-            confirmUrl
+        String verifyUrl = frontendUrl + "/verify?token=" + token;
+        sendTransactionEmail(
+            toEmail,
+            "Verify your CampusTrade account",
+            "Click the link below to verify your account:\n\n" + verifyUrl
         );
-        mailSender.send(message);
     }
 }

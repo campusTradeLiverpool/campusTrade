@@ -61,25 +61,21 @@ function ConfirmTransaction() {
 
     // function to confirm the transaction
     const confirmTransaction = async () => {
-        console.log('user object:', user);
-        console.log('sellerEmail being sent:', user?.email);
-        
-        if (!user) {
-            setStatus('You need to be logged in. Redirecting...');
-            localStorage.setItem('redirectAfterLogin', window.location.pathname);
-            window.location.href = '/login';
-            return;
-        }
-
         try {
+            const token = localStorage.getItem('token'); // or however you store it
+
             await axios.post(
                 `${process.env.REACT_APP_API_URL}/api/transactions/seller-confirm/${transactionId}`,
-                { sellerEmail: user.email }
+                { sellerEmail: user.email },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`  // ← this was missing
+                    }
+                }
             );
             setConfirmed(true);
             setStatus('Transaction confirmed! Both users have been emailed the details.');
         } catch (err) {
-            console.log('error response:', err.response?.data);
             setStatus('Failed to confirm transaction.');
         }
     };
