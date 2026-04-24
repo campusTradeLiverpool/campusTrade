@@ -67,19 +67,22 @@ function Meetup() {
     };
     
     const confirmMeetup = async () => {
-        try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/transactions/buyer-confirm`, {
+    try {
+        await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/transactions/buyer-confirm`,
+            {
                 buyerEmail: user.email,
                 sellerEmail: listing.seller.email,
                 listingId: String(listingId),
                 inSafeZone: String(inZone)
-            });
-            setStatus('✅ Confirmed! The seller has been emailed to confirm their side.');
-        } catch (err) {
-            setStatus('Failed to confirm meetup.');
-        }
+            }
+        );
+        setStatus('✅ Confirmed! The seller has been emailed to confirm their side.');
+    } catch (err) {
+        setStatus('Failed to confirm meetup.');
+    }
     };
-
+    
     return (
         <div style={styles.container}>
             <h2>Confirm Meetup</h2>

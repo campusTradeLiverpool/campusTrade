@@ -18,7 +18,10 @@ function ConfirmTransaction() {
 
     // if the user is not logged in, it sends them to the login page
     useEffect(() => {
-        if (!user) { window.location.href = '/login'; }
+    if (!user) {
+        localStorage.setItem('redirectAfterLogin', window.location.pathname);
+        window.location.href = '/login';
+    }
     }, []);
 
     // function to check the users location
@@ -58,21 +61,25 @@ function ConfirmTransaction() {
 
     // function to confirm the transaction
     const confirmTransaction = async () => {
-        try {
-            const token = localStorage.getItem('token'); // or however you store it
+        console.log('user object:', user);
+        console.log('sellerEmail being sent:', user?.email);
+        
+        if (!user) {
+            setStatus('You need to be logged in. Redirecting...');
+            localStorage.setItem('redirectAfterLogin', window.location.pathname);
+            window.location.href = '/login';
+            return;
+        }
 
+        try {
             await axios.post(
                 `${process.env.REACT_APP_API_URL}/api/transactions/seller-confirm/${transactionId}`,
-                { sellerEmail: user.email },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`  // ← this was missing
-                    }
-                }
+                { sellerEmail: user.email }
             );
             setConfirmed(true);
             setStatus('Transaction confirmed! Both users have been emailed the details.');
         } catch (err) {
+            console.log('error response:', err.response?.data);
             setStatus('Failed to confirm transaction.');
         }
     };
