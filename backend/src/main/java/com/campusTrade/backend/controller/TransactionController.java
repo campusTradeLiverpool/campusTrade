@@ -8,6 +8,7 @@ import com.campusTrade.backend.repository.UserRepository;
 import com.campusTrade.backend.repository.ListingRepository;
 import com.campusTrade.backend.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +19,13 @@ import java.util.Map;
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    @Autowired private TransactionRepository transactionRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private ListingRepository listingRepository;
+    @Autowired private EmailService emailService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ListingRepository listingRepository;
-
-    @Autowired
-    private EmailService emailService;
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     @PostMapping("/buyer-confirm")
     public ResponseEntity<?> buyerConfirm(@RequestBody Map<String, String> data) {
@@ -47,16 +44,18 @@ public class TransactionController {
             transaction.setInSafeZone(Boolean.parseBoolean(data.get("inSafeZone")));
             transaction.setBuyerConfirmed(true);
             transaction.setSellerConfirmed(false);
-
             transactionRepository.save(transaction);
+
+            String sellerToken = data.get("sellerToken"); 
+            String confirmUrl = frontendUrl + "/confirm-transaction/" + transaction.getId() + "?token=" + sellerToken;
 
             emailService.sendTransactionEmail(
                 seller.getEmail(),
                 "CampusTrade — Confirm your sale",
                 "Hi " + seller.getName() + ",\n\n" +
                 buyer.getName() + " has confirmed the meetup for your listing: " + listing.getTitle() + ".\n\n" +
-                "Please log in to CampusTrade and confirm the transaction from your end.\n\n" +
-                "Go to: http://localhost:3000/confirm-transaction/" + transaction.getId() + "\n\n" +
+                "Click the link below when you are in a University of Liverpool safe zone to confirm the trade:\n\n" +
+                confirmUrl + "\n\n" +
                 "CampusTrade Team"
             );
 
@@ -82,7 +81,6 @@ public class TransactionController {
             Listing listing = transaction.getListing();
             listing.setAvailable(false);
             listingRepository.save(listing);
-
             transactionRepository.save(transaction);
 
             emailService.sendTransactionEmail(
@@ -91,7 +89,7 @@ public class TransactionController {
                 "Hi " + transaction.getBuyer().getName() + ",\n\n" +
                 "Your transaction for " + listing.getTitle() + " has been confirmed by the seller.\n\n" +
                 "The listing has been removed from CampusTrade. Enjoy your purchase!\n\n" +
-                "CampusTrade Team"
+                "CampusTrade"
             );
 
             emailService.sendTransactionEmail(
@@ -100,7 +98,7 @@ public class TransactionController {
                 "Hi " + transaction.getSeller().getName() + ",\n\n" +
                 "You have confirmed the sale of " + listing.getTitle() + ".\n\n" +
                 "The listing has been removed from CampusTrade. Well done!\n\n" +
-                "CampusTrade Team"
+                "CampusTrade"
             );
 
             return ResponseEntity.ok("Transaction complete. Both users have been notified.");
