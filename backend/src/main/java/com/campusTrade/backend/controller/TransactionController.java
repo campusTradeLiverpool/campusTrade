@@ -42,8 +42,7 @@ public class TransactionController {
             transaction.setSellerConfirmed(false);
             transactionRepository.save(transaction);
 
-            String sellerToken = data.get("sellerToken"); 
-            String confirmUrl = "https://campus-trade-orcin.vercel.app/confirm-transaction/" + transaction.getId() + "?token=" + sellerToken;
+            String confirmUrl = "https://campus-trade-orcin.vercel.app/confirm-transaction/" + transaction.getId() + "\"";
 
             emailService.sendTransactionEmail(
                 seller.getEmail(),

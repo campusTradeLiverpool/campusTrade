@@ -17,7 +17,7 @@ public class EmailService {
     public void sendTransactionEmail(String toEmail, String subject, String body) {
         Resend resend = new Resend(resendApiKey);
         CreateEmailOptions params = CreateEmailOptions.builder()
-            .from("noreply@campustrade.com")
+            .from("noreply@joelstani.land")
             .to(toEmail)
             .subject(subject)
             .text(body)
